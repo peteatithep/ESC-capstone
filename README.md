@@ -1,11 +1,6 @@
 # Electronic Speed Control (ESC)
 Electronic Speed Control (ESC) Project for KMITL Senior Capstone Design course
 
-<ins>**Group Members**</ins>
-  1. Atithep Oonwattananukool
-  2. Phuntira Asote
-  3. Pincha Boonchai
-
 <ins>**Project Objectives**</ins>
 - To study the working principles of an Electronic Speed Controller (ESC), Brushless DC (BLDC), and other components in an electric scooter.
 - To design and develop an Electronic Speed Controller (ESC) board and integrate it into an electric scooter prototype.
