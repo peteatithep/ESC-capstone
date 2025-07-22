@@ -20,6 +20,9 @@ Electronic Speed Control (ESC) Project for KMITL Senior Capstone Design course
   
 ## How It Works
 An Electronic Speed Controller (ESC) is a device utilized to regulate the speed, direction, and torque of electric motors, particularly Brushless DC (BLDC) motors commonly used in electric scooters, drones, remote-controlled vehicles, and electric bicycles. It operates by receiving input signals from a throttle and converting them into high-frequency Pulse Width Modulation (PWM) signals that switch MOSFETs to control the power supplied to the motor. In BLDC motor applications, the ESC also performs motor commutation, ensuring that the motor phases are energized in the correct sequence for smooth and efficient operation. The correct sequence can be known using the back EMF (sensorless) and hall sensors method. ESCs serve a critical function in motor control systems where precise regulation of speed and torque is essential.
+
+<ins>**Pulse Width Modulation (PWM) Generation**</ins>
+
   
 ## Applications
   - Electric Vehicles (EVs)
