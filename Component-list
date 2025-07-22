@@ -1,0 +1,32 @@
+MAIN PARTS
+  - Electric scooter frame (or secondhand electric scooter)
+  - Brushless DC motor
+  - Battery Module (Li-ion or LiFePo4)
+  - ESC
+  - Buck/boost converter
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+ESC COMPONENTS
+  1. Microcontroller (Arduino Nano)
+  2. N-type MOSFETS
+  3. MOSFET gate driver IC
+  4. DC-DC buck/boost converter
+  5. Heat sink
+  6. Aluminum case
+  7. Resistors
+  8. Capacitors (ceramic and electrolytic)
+  9. Switches and button
+  10. LEDs
+  11. PCB terminals
+  12. Fuse
+  13. Diodes
+  14. Pin headers
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+TESTING EQUIPMENT
+  1. ESC
+  2. BLDC motor
+  3. Battery
+  4. Electric scooter
+  5. Oscilloscope and data logger
+  6. Tachometer
