@@ -1,4 +1,4 @@
-# ESC Project
+# Electronic Speed Control (ESC) Project
 Electronic Speed Control (ESC) Project for KMITL Senior Capstone Design course
 
 <ins>**Group Members**</ins>
