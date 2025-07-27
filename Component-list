@@ -8,19 +8,22 @@ MAIN PARTS
 ---------------------------------------------------------------------------------------------------------------------------------------------------------
 ESC COMPONENTS
   1. Microcontroller (Arduino Nano)
-  2. N-type MOSFETS
-  3. MOSFET gate driver IC
+  2. IRF3205 N-type MOSFETS
+  3. IR2101 MOSFET gate driver IC
   4. DC-DC buck/boost converter
   5. Heat sink
   6. Aluminum case
-  7. Resistors
+  7. Resistors and shunt resistor
   8. Capacitors (ceramic and electrolytic)
-  9. Switches and button
+  9. DIP switches and button
   10. LEDs
   11. PCB terminals
   12. Fuse
-  13. Diodes
+  13. 1N4148 diodes
   14. Pin headers
+  15. PCF8574 IC
+  16. LM358N Op-amp
+  17. BP5293-50 buck converter
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------
 TESTING EQUIPMENT
