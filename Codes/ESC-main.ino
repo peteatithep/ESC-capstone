@@ -56,8 +56,10 @@ Arduino AVR Boards 1.8.6
 #define PWM_MAX_DUTY 255
 #define PWM_MIN_DUTY 0
 #define PWM_START_DUTY 100
-#define Kp 4.3
-#define Ki 3.6
+
+// PID control
+#define Kp 0.013
+#define Ki 16.61
 #define Kd 0
 
 volatile byte hall_state = 0;
@@ -66,7 +68,7 @@ const byte pole_pairs = 7;  //6, 7, 14 pairs
 unsigned long prev_rpm_time = 0;
 double meas_motor_speed = 0;   //RPM
 double set_motor_speed = 300;  //RPM
-double PWM_DUTY = 0;
+double PWM_DUTY = 100;
 bool SENSORLESS_MODE = false, CONTROL_MODE = false, DEBUG_MODE = false, REVERSE_MODE = false;
 
 OneWire oneWire(ONE_WIRE_BUS);
@@ -80,8 +82,7 @@ void setup() {
   temp.begin();
   if (!pcf.begin(0x20, &Wire)) {
     Serial.println("PCF8574 ERROR");
-    while (1)
-      ;
+    while (1);
   }
   pcf.pinMode(POWERON_ALERT_PIN, OUTPUT);
   pcf.pinMode(LOWBAT_ALERT_PIN, OUTPUT);
@@ -109,10 +110,10 @@ void setup() {
   DDRB |= 0b00001110;  // Enable pins 9, 10, 11 as outputs
   PORTB = 0x00;
 
-  TCCR1A = 0;  // Timer1 off initially
-  TCCR1B = 0x01;
+  TCCR1A = 0;     // Timer1 off initially
+  TCCR1B = 0x01;  //No prescaler
   TCCR2A = 0;
-  TCCR2B = 0x01;
+  TCCR2B = 0x01;  //No prescaler
 
   if (pcf.digitalRead(SENSORLESS_MODE_PIN) == LOW) {
     SENSORLESS_MODE = true;
@@ -130,8 +131,8 @@ void setup() {
   }
 
   SET_PWM_DUTY(PWM_START_DUTY);
-  
-  float tol = set_motor_speed * 0.03;   //3% band
+
+  float tol = set_motor_speed * 0.03;  //3% band
   myPID.atSetPoint(tol);
   // myPID.setBangBang(4);
   // myPID.setTimeStep(4000);
@@ -155,9 +156,13 @@ void loop() {
   }
 
   if (DEBUG_MODE) {
+    Serial.print("PWM DUTY: ");
     Serial.println((PWM_DUTY / 255) * 100);
+    Serial.print("Hall(CBA): ");
     Serial.println(hall_state, BIN);
+    Serial.print("RPM: ");
     Serial.println(meas_motor_speed);
+    Serial.println("------------------------------------------------------------------------------");
     delay(500);
   }
 }
@@ -181,26 +186,26 @@ void UPDATE_HALL() {
     byte hall_b = (pind & 0b10000000) ? 1 : 0;  // Check bit 7 (pin 7)
     byte hall_c = (pind & 0b01000000) ? 1 : 0;  // Check bit 6 (pin 6)
 
-    hall_state = (hall_a << 2) | (hall_b << 1) | hall_c;
+    hall_state = (hall_c << 2) | (hall_b << 1) | hall_a;  // CBA
     if (REVERSE_MODE) {
       switch (hall_state) {
-        case 0b100: AH_BL(); break;
-        case 0b101: AH_CL(); break;
-        case 0b001: BH_CL(); break;
-        case 0b011: BH_AL(); break;
-        case 0b010: CH_AL(); break;
-        case 0b110: CH_BL(); break;
-        default: all_off(); break;  // Invalid state
+        case 0b101: BH_AL(); break;  // B high, A low
+        case 0b100: CH_AL(); break;  // C high, A low
+        case 0b110: CH_BL(); break;  // C high, B low
+        case 0b010: AH_BL(); break;  // A high, B low
+        case 0b011: AH_CL(); break;  // A high, C low
+        case 0b001: BH_CL(); break;  // B high, C low
+        default: all_off(); break;
       }
     } else {
       switch (hall_state) {
-        case 0b100: CH_BL(); break;
-        case 0b101: CH_AL(); break;
-        case 0b001: BH_AL(); break;
-        case 0b011: BH_CL(); break;
-        case 0b010: AH_CL(); break;
-        case 0b110: AH_BL(); break;
-        default: all_off(); break;  // Invalid state
+        case 0b101: BH_CL(); break;  // B high, C low
+        case 0b100: AH_CL(); break;  // A high, C low
+        case 0b110: AH_BL(); break;  // A high, B low
+        case 0b010: CH_BL(); break;  // C high, B low
+        case 0b011: CH_AL(); break;  // C high, A low
+        case 0b001: BH_AL(); break;  // B high, A low
+        default: all_off(); break;
       }
     }
   } else {
@@ -279,7 +284,7 @@ void MEASUREMENT() {
   float voltageRatio = 7.0;
   if (millis() - prev_time > 1000) {
     float V_shunt = analogRead(R_SHUNT_PIN) * (Vref / 1024.0);
-    float current = V_shunt * (30.0 / 0.075);
+    float current = V_shunt * (20.0 / 0.075);
 
     float V_bat = analogRead(BAT_VOLTAGE_PIN) * (Vref / 1024.0) * voltageRatio;
     if (V_bat < 48.0) {
@@ -308,6 +313,7 @@ void MEASUREMENT() {
       Serial.println(" C");
       Serial.print("RPM: ");
       Serial.println(meas_motor_speed);
+      Serial.println("------------------------------------------------------------------------------");
     }
     prev_time = millis();
   }
