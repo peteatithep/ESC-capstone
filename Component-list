@@ -13,8 +13,8 @@ ESC COMPONENTS
   4. DC-DC buck/boost converter
   5. Heat sink
   6. Aluminum case
-  7. Resistors and shunt resistor
-  8. Capacitors (ceramic and electrolytic)
+  7. Resistors
+  8. Capacitors (MLCC and electrolytic)
   9. DIP switches and button
   10. LEDs
   11. PCB terminals
@@ -24,12 +24,14 @@ ESC COMPONENTS
   15. PCF8574 IC
   16. LM358N Op-amp
   17. BP5293-50 buck converter
-
+  18. ACS712 Current Sensor
 ---------------------------------------------------------------------------------------------------------------------------------------------------------
 TESTING EQUIPMENT
   1. ESC
   2. BLDC motor
-  3. Battery
+  3. Battery or Power supply
   4. Electric scooter
   5. Oscilloscope and data logger
   6. Tachometer
+  7. Differential probe
+  8. Current probe
